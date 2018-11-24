@@ -1,5 +1,8 @@
 import xml_formater
 
-errors = xml_formater.analyze('import.xml')
+errors, info = xml_formater.analyze('import.xml')
 
 print(errors)
+
+f = open("result.txt", "w")
+f.write(xml_formater.format(info))
