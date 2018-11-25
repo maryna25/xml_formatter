@@ -192,7 +192,7 @@ def analyze(path):
     if state != 'text':
         errors.append({index: 'XML is not valid'})
     if len(tags) > 0:
-        errors.append({index: 'Some tags are not closed®'})
+        errors.append({index: 'Some tags are not closed'})
 
     # print(tags)
     # print(errors)

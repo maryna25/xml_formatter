@@ -1,12 +1,12 @@
-def set_params(default=True):
-    params = {'use_tab': False, 'indent': 4, 'keep_line_breaks': True, 'keep_blank_lines': 2,
-              'wrap_attr': 'long', 'wrap_text': True}
-    if default:
-        return params
+def set_params(params=None):
+    if not params:
+        params = {'use_tab': False, 'indent': 4, 'keep_line_breaks': True, 'keep_blank_lines': 2,
+                  'wrap_attr': 'long', 'wrap_text': True}
+    return params
 
 
-def format(info):
-    params = set_params()
+def format(info, params=None):
+    params = set_params(params)
     indent_char = "\t" if params['use_tab'] else ' '
     result = ''
     for tag in info:
