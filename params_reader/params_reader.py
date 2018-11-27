@@ -12,6 +12,13 @@ def read_params_from_input():
     params['keep_blank_lines'] = input()
     print("Enter 1 if you want to wrap text (default True)")
     params['wrap_text'] = True if input() == 1 else False
+    print("Enter 1 if you want to have space around equal (default False)")
+    params['space_around_equal'] = True if input() == 1 else False
+    print("Enter 1 if you want to have space space after tag name (default False)")
+    params['space_after_tag_name'] = True if input() == 1 else False
+    print("Enter 1 if you want to have space in empty tag (default False)")
+    params['space_in_empty_tag'] = True if input() == 1 else False
+
     print("Enter file name to save")
     name = input()
 
