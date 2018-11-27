@@ -1,6 +1,6 @@
 def set_params(params=None):
     if not params:
-        params = {'use_tab': False, 'indent': 4, 'keep_line_breaks': True, 'keep_blank_lines': 2,
+        params = {'use_tab': False, 'tab_size': 4, 'indent': 4, 'keep_line_breaks': True, 'keep_blank_lines': 2,
                   'wrap_attr': 'long', 'wrap_text': True}
     return params
 
@@ -28,6 +28,8 @@ def format(info, params=None):
 
         while result[(-1*(params['keep_blank_lines']+2)):] == ("\n" * (params['keep_blank_lines']+2)):
             result = result[:-1]
+
+        result = result.expandtabs(params['tab_size'])
 
     return result
 

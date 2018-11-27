@@ -2,6 +2,8 @@ def read_params_from_input():
     params = {}
     print("Enter 1 if you want to use tab as indent char (default False)")
     params['use_tab'] = True if input() == 1 else False
+    print("Enter tab size (default 4)")
+    params['tab_size'] = input()
     print("Enter number of indent chars (default 4)")
     params['indent'] = input()
     print("Enter 1 to keep line breaks (default True)")
