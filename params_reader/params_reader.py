@@ -8,6 +8,8 @@ def read_params_from_input():
     params['indent'] = input()
     print("Enter 1 to keep line breaks (default True)")
     params['keep_line_breaks'] = True if input() == 1 else False
+    print("Enter 1 to keep line breaks in text (default True)")
+    params['keep_line_breaks_in_text'] = True if input() == 1 else False
     print("Enter number of blank lines to keep (default 2)")
     params['keep_blank_lines'] = input()
     print("Enter 1 if you want to wrap text (default True)")
