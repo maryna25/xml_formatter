@@ -1,7 +1,8 @@
 def set_params(params=None):
     if not params:
-        params = {'use_tab': False, 'tab_size': 4, 'indent': 4, 'keep_line_breaks': True, 'keep_line_breaks_in_text': True,
-                  'keep_blank_lines': 2, 'wrap_attr': 'long', 'wrap_text': True, 'space_around_equal': False,
+        params = {'use_tab': False, 'tab_size': 4, 'indent': 4, 'keep_indents_on_empty_line': False,
+                  'keep_line_breaks': True, 'keep_line_breaks_in_text': True, 'keep_blank_lines': 2,
+                  'wrap_attr': 'long', 'wrap_text': True, 'space_around_equal': False,
                   'space_after_tag_name': False, 'space_in_empty_tag': False}
     return params
 
@@ -15,23 +16,44 @@ def format(info, params=None):
         if tag['type'] == 'text':
             text = format_text(params, tag['name'], indent_char, tag['level'], get_last_string_length(result))
             result += text
-
         elif tag['type'] == 'opening':
             result += get_indent(params, indent_char, tag['level']) + '<' + tag['name'] + format_attrs(params, tag, indent_char) + format_space_in_tag(params) + '>'
         elif tag['type'] == 'closing':
-            if result[-1:] == "\n":
+            if only_spaces_in_last_line(result):  # if closing tag starts on new line we need to add indent
+                while result[-1] != "\n":  # but if there are spaces we need to remove it to add correct indent
+                    result = result[:-1]
                 result += get_indent(params, indent_char, tag['level'])
             result += '<' + tag['name'] + format_space_in_tag(params) + '>'
         elif tag['type'] == 'opening-closing':
             result += get_indent(params, indent_char, tag['level']) + '<' + tag['name'] + format_attrs(params, tag, indent_char) + format_space_in_tag(params, True) + '/>'
 
-        result = "\n".join(str(x) for x in result.split("\n") if not x.isspace())  # remove whitespaces from blank line
+    result = remove_blank_lines(result, params)
 
-        while result[(-1*(params['keep_blank_lines']+2)):] == ("\n" * (params['keep_blank_lines']+2)):
-            result = result[:-1]
+    result = result.expandtabs(params['tab_size'])
 
-        result = result.expandtabs(params['tab_size'])
+    return result
 
+
+def only_spaces_in_last_line(text):
+    last_line = text.split("\n")[-1]
+    return last_line == '' or last_line.isspace()
+
+
+def remove_blank_lines(result, params):
+    i = len(result) - 1
+    blank_lines_count = 0
+    while i >= 0:
+        if result[i] != "\n" and result[i] != "\t" and result[i] != ' ':
+            blank_lines_count = 0
+        if result[i] == "\n":
+            blank_lines_count += 1
+        if blank_lines_count > params['keep_blank_lines'] + 1:
+            index = i + 1
+            while result[index] != "\n":
+                index += 1
+            result = result[0:i] + result[index:]
+            blank_lines_count -= 1
+        i -= 1
     return result
 
 
@@ -74,41 +96,46 @@ def format_long_string(text, length, beg_length):
         wrapped_text = True
         first = True
         for line in text.split("\n"):
-            if len(line) > length:
+            new_length = length - beg_length if first else length
+            first = False
+            if len(line) > new_length:
                 wrapped_text = False
-                index = length - beg_length if first else length
-                while index > 0:
-                    if line[index] == ' ':
-                        line = line[:index] + "\n" + line[index + 1:]
-                        break
-                    index -= 1
+                index = line[0:new_length].rfind(' ')
+                line = line[:index] + "\n" + line[index + 1:]
             else:
                 first = False
+
             new_text += line
             if len(text.split("\n")) > 1:
                 new_text += "\n"
+
+        if new_text.endswith("\n"):
+            new_text = new_text[:-1]
+
         text = new_text
     return text
 
 
 def format_text(params, text, indent_char, level, length):
     if (not params['keep_line_breaks_in_text']) and (not text.isspace()):
-        text = text.replace("\n", '')
+            text = text.replace("\n", '')
 
-    while text and (text[0] == ' ' or text[0] == "\t"):  # remove whitespaces from the beginning
-        text = text[1:]
-    while text[-1:] == ' ' or text[-1:] == "\t":  # remove whitespaces from the end
-        text = text[:-1]
-    while text.find("\n ") >= 0:
-        text = text.replace("\n ", "\n")
-    while text.find("\n\t") >= 0:
-        text = text.replace("\n\t", "\n")
+    if not (params['keep_indents_on_empty_line'] and text.isspace() and text.count("\n") > 1):
+        while text and (text[0] == ' ' or text[0] == "\t"):  # remove whitespaces from the beginning
+            text = text[1:]
+        while text[-1:] == ' ' or text[-1:] == "\t":  # remove whitespaces from the end
+            text = text[:-1]
+        while text.find("\n ") >= 0:
+            text = text.replace("\n ", "\n")
+        while text.find("\n\t") >= 0:
+            text = text.replace("\n\t", "\n")
+
     if not text.isspace():
         if params['wrap_text']:
             text = format_long_string(text, 120 - level * params['indent'], length)
 
         text = text.replace("\n", ("\n" + get_indent(params, indent_char, level)))  # add indent fot text
-        if text.find("\n") >= 0 and text[-1] != "\n":  # put closing tag in new line
+        if text.find("\n") >= 0 and (not only_spaces_in_last_line(text)):  # put closing tag in new line
             text += "\n"
 
     return text

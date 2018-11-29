@@ -6,6 +6,8 @@ def read_params_from_input():
     params['tab_size'] = input()
     print("Enter number of indent chars (default 4)")
     params['indent'] = input()
+    print("Enter 1 to keep indents on empty line (default False)")
+    params['keep_indents_on_empty_line'] = True if input() == 1 else False
     print("Enter 1 to keep line breaks (default True)")
     params['keep_line_breaks'] = True if input() == 1 else False
     print("Enter 1 to keep line breaks in text (default True)")
