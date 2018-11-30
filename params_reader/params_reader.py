@@ -16,6 +16,8 @@ def read_params_from_input():
     params['keep_blank_lines'] = input()
     print("Enter 1 if you want to wrap text (default True)")
     params['wrap_text'] = True if input() == 1 else False
+    print("Enter 1 if you want to align attrs (default True)")
+    params['align_attrs'] = True if input() == 1 else False
     print("Enter 1 if you want to keep whitespaces (default False)")
     params['keep_white_spaces'] = True if input() == 1 else False
     print("Enter 1 if you want to have space around equal (default False)")

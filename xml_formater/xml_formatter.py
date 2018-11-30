@@ -2,8 +2,8 @@ def set_params(params=None):
     if not params:
         params = {'use_tab': False, 'tab_size': 4, 'indent': 4, 'keep_indents_on_empty_line': False,
                   'keep_line_breaks': True, 'keep_line_breaks_in_text': True, 'keep_blank_lines': 2,
-                  'wrap_attr': 'long', 'wrap_text': True, 'keep_white_spaces': False, 'space_around_equal': False,
-                  'space_after_tag_name': False, 'space_in_empty_tag': False}
+                  'wrap_attr': 'long', 'wrap_text': True, 'align_attrs': True, 'keep_white_spaces': False,
+                  'space_around_equal': False, 'space_after_tag_name': False, 'space_in_empty_tag': False}
     return params
 
 
@@ -75,7 +75,8 @@ def format_attrs(params, tag, indent_char):
     if params['keep_line_breaks'] and len(attrs) > 1:
         for i, attr in enumerate(attrs):
             if i > 0 and attrs[i-1]['value'][-1] == "\n":
-                result += get_indent(params, indent_char, tag['level']) + ' '*(len(tag['name']) + 1)
+                result += get_indent(params, indent_char, tag['level'])
+                result += ' '*(len(tag['name']) + 1) if params['align_attrs'] else indent_char*params['indent']
             result += ' ' + attr['name'] + format_equal(params) + attr['value']
     else:
         for attr in attrs:
