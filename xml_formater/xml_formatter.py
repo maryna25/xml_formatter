@@ -2,8 +2,9 @@ def set_params(params=None):
     if not params:
         params = {'use_tab': False, 'tab_size': 4, 'indent': 4, 'keep_indents_on_empty_line': False,
                   'keep_line_breaks': True, 'keep_line_breaks_in_text': True, 'keep_blank_lines': 2,
-                  'wrap_attr': 'long', 'wrap_text': True, 'align_attrs': True, 'keep_white_spaces': False,
+                  'wrap_attrs': 1, 'wrap_text': True, 'align_attrs': True, 'keep_white_spaces': False,
                   'space_around_equal': False, 'space_after_tag_name': False, 'space_in_empty_tag': False}
+        # wrap attrs :  0 - do not wrap / 1 - wrap if long / 2 - chop down if long / 3 - wrap always
     return params
 
 
@@ -72,11 +73,12 @@ def format_attrs(params, tag, indent_char):
         return ''
 
     result = ''
-    if params['keep_line_breaks'] and len(attrs) > 1:
+    if params['wrap_attrs'] == 3:
+        result = chop_down_every_attr(attrs, params, indent_char, tag)
+    elif params['keep_line_breaks'] and len(attrs) > 1:
         for i, attr in enumerate(attrs):
             if i > 0 and attrs[i-1]['value'][-1] == "\n":
-                result += get_indent(params, indent_char, tag['level'])
-                result += ' '*(len(tag['name']) + 1) if params['align_attrs'] else indent_char*params['indent']
+                result += get_indent_for_attr(params, indent_char, tag['name'], tag['level'])
             result += ' ' + attr['name'] + format_equal(params) + attr['value']
     else:
         for attr in attrs:
@@ -84,6 +86,41 @@ def format_attrs(params, tag, indent_char):
                 attr['value'] = attr['value'][:-1]
             result += ' ' + attr['name'] + format_equal(params) + attr['value']
 
+    line_beg = get_indent(params, indent_char, tag['level']) + '<' + tag['name']
+    full_line = line_beg + result + '>'
+    if attr_line_too_long(full_line):
+        if params['wrap_attrs'] == 2:
+            result = chop_down_every_attr(attrs, params, indent_char, tag)
+            print(full_line)
+        elif params['wrap_attrs'] == 1:
+            result = format_long_string(result, 120, len(line_beg), True, params, indent_char, tag['name'], tag['level'])
+
+    return result
+
+
+def attr_line_too_long(attrs_lines):
+    for line in attrs_lines.split("\n"):
+        if len(line) > 120:
+            return True
+    return False
+
+
+def chop_down_every_attr(attrs, params, indent_char, tag):
+    result = ''
+    for i, attr in enumerate(attrs):
+        while attr['value'][-1] == "\n":
+            attr['value'] = attr['value'][:-1]
+        if i != 0:
+            result += get_indent_for_attr(params, indent_char, tag['name'], tag['level'])
+        result += ' ' + attr['name'] + format_equal(params) + attr['value']
+        if i != len(attrs) - 1:
+            result += "\n"
+    return result
+
+
+def get_indent_for_attr(params, indent_char, tag_name, level):
+    result = get_indent(params, indent_char, level)
+    result += ' ' * (len(tag_name) + 1) if params['align_attrs'] else indent_char * params['indent']
     return result
 
 
@@ -91,7 +128,7 @@ def format_equal(params):
     return " = " if params['space_around_equal'] else "="
 
 
-def format_long_string(text, length, beg_length):
+def format_long_string(text, length, beg_length, attr=False, params=None, indent_char=None, tag_name=None, level=None):
     wrapped_text = False
     while not wrapped_text:
         new_text = ''
@@ -103,7 +140,10 @@ def format_long_string(text, length, beg_length):
             if len(line) > new_length:
                 wrapped_text = False
                 index = line[0:new_length].rfind(' ')
-                line = line[:index] + "\n" + line[index + 1:]
+                if attr:
+                    line = line[:index] + "\n " + get_indent_for_attr(params, indent_char, tag_name, level) + line[index + 1:]
+                else:
+                    line = line[:index] + "\n" + line[index + 1:]
             else:
                 first = False
 

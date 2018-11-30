@@ -14,6 +14,8 @@ def read_params_from_input():
     params['keep_line_breaks_in_text'] = True if input() == 1 else False
     print("Enter number of blank lines to keep (default 2)")
     params['keep_blank_lines'] = input()
+    print("Enter 0 if you to not wrap attrs, 1 - wrap if long, 2 - chomp down if long, 3 - wrap always (default 1)")
+    params['wrap_attrs'] = input()
     print("Enter 1 if you want to wrap text (default True)")
     params['wrap_text'] = True if input() == 1 else False
     print("Enter 1 if you want to align attrs (default True)")
