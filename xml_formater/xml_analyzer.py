@@ -70,7 +70,7 @@ def analyze(path):
                         level += 1
                 elif tag_type == 'closing':
                     if tags[-1] != tag_name:
-                        errors.append({index: 'Unmatched closing tag'})
+                        errors.append({index: 'Unmatched closing tag: ' + tag_name})
                     tags.pop()
                     level -= 1
                     info.append({'name': '/' + tag_name, 'level': level, 'type': 'closing', 'value': ''})
@@ -83,7 +83,7 @@ def analyze(path):
                         level += 1
                 elif tag_type == 'closing':
                     if tags[-1] != tag_name:
-                        errors.append({index: 'Unmatched closing tag'})
+                        errors.append({index: 'Unmatched closing tag: ' + tag_name})
                     tags.pop()
                     level -= 1
                     info.append({'name': '/' + tag_name, 'level': level, 'type': 'closing', 'value': ''})
@@ -192,14 +192,14 @@ def analyze(path):
     if state != 'text':
         errors.append({index: 'XML is not valid'})
     if len(tags) > 0:
-        errors.append({index: 'Some tags are not closed'})
+        errors.append({index: '"' + ','.join(tags) + '" tags are not closed'})
 
     # print(tags)
     # print(errors)
     # print(info)
     # print(state)
 
-    return errors, add_attrs_to_tag(info)
+    return unique(errors), add_attrs_to_tag(info)
 
 
 def add_attrs_to_tag(info):
@@ -216,5 +216,11 @@ def add_attrs_to_tag(info):
             index += 1
     return info
 
-# analyze('text1.xml')
+
+def unique(arr):
+    unique_arr = []
+    for x in arr:
+        if x not in unique_arr:
+            unique_arr.append(x)
+    return unique_arr
 
