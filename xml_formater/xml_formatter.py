@@ -1,9 +1,10 @@
 def set_params(params=None):
     if not params:
-        params = {'use_tab': False, 'tab_size': 4, 'indent': 4, 'keep_indents_on_empty_line': False,
-                  'keep_line_breaks': True, 'keep_line_breaks_in_text': True, 'keep_blank_lines': 2,
-                  'wrap_attrs': 1, 'wrap_text': True, 'align_attrs': True, 'keep_white_spaces': False,
-                  'space_around_equal': False, 'space_after_tag_name': False, 'space_in_empty_tag': False}
+        params = {'use_tab': False, 'smart_tabs': False, 'tab_size': 4, 'indent': 4,
+                  'keep_indents_on_empty_line': False, 'keep_line_breaks': True, 'keep_line_breaks_in_text': True,
+                  'keep_blank_lines': 2, 'wrap_attrs': 1, 'wrap_text': True, 'align_attrs': True,
+                  'keep_white_spaces': False, 'space_around_equal': False, 'space_after_tag_name': False,
+                  'space_in_empty_tag': False}
         # wrap attrs :  0 - do not wrap / 1 - wrap if long / 2 - chop down if long / 3 - wrap always
     return params
 
@@ -120,7 +121,13 @@ def chop_down_every_attr(attrs, params, indent_char, tag):
 
 def get_indent_for_attr(params, indent_char, tag_name, level):
     result = get_indent(params, indent_char, level)
-    result += ' ' * (len(tag_name) + 1) if params['align_attrs'] else indent_char * params['indent']
+    if params['align_attrs']:
+        if params['use_tab'] and not params['smart_tabs']:
+            result += "\t" * ((len(tag_name) + 1) / params['tab_size'])
+        else:
+            result += ' ' * (len(tag_name) + 1)
+    else:
+        result += indent_char * params['indent']
     return result
 
 
