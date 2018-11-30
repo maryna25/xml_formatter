@@ -137,16 +137,29 @@ def format_equal(params):
 
 def format_long_string(text, length, beg_length, attr=False, params=None, indent_char=None, tag_name=None, level=None):
     wrapped_text = False
+    do_not_check = []  # to store indexes of lines that cannot be split
     while not wrapped_text:
         new_text = ''
         wrapped_text = True
         first = True
+        i = 0
         for line in text.split("\n"):
+            if i in do_not_check:  # dont need to try to split string without spaces
+                new_text += line  # but need to add whole string to result
+                if len(text.split("\n")) > 1:
+                    new_text += "\n"
+                continue
             new_length = length - beg_length if first else length
             first = False
             if len(line) > new_length:
                 wrapped_text = False
                 index = line[0:new_length].rfind(' ')
+                if index == -1:
+                    index = line[new_length:].find(' ')
+                    if index == -1:  # no spaces in string
+                        do_not_check.append(i)
+                        index = 0
+                        line = ' ' + line  # first char will be deleted
                 if attr:
                     line = line[:index] + "\n " + get_indent_for_attr(params, indent_char, tag_name, level) + line[index + 1:]
                 else:
@@ -154,6 +167,7 @@ def format_long_string(text, length, beg_length, attr=False, params=None, indent
             else:
                 first = False
 
+            i += 1
             new_text += line
             if len(text.split("\n")) > 1:
                 new_text += "\n"
