@@ -2,8 +2,6 @@ import xml_formater
 import params_reader
 
 
-params_reader.read_params_from_file("kek.txt")
-
 print("Hello!")
 print("Enter 1 to only analyze xml")
 print("Enter 2 to format xml with default configs")

@@ -14,6 +14,7 @@ def analyze(path):
     xml_tag = False  # True if tag is <?xml ... ?>
     level = 0
     text = ''
+    new_line = False
 
     state = ''  # start_name name after_name closing_expected text attr_name quote_expected attr_value whitespace_expected
 
@@ -62,6 +63,8 @@ def analyze(path):
                 else:
                     errors.append({index: 'Invalid tag name'})
             elif ch == ' ' or ch == "\t" or ch == "\n":
+                if ch == "\n":
+                    new_line = True
                 state = 'after_name'
                 if tag_type == 'opening':
                     info.append({'name': tag_name, 'level': level, 'type': 'opening', 'value': ''})
@@ -91,6 +94,8 @@ def analyze(path):
                 errors.append({index: 'Invalid tag name'})
         elif state == 'after_name':
             if ch == ' ' or ch == "\t" or ch == "\n":
+                if ch == "\n":
+                    new_line = True
                 continue
             if ch == '/':
                 state = 'closing_expected'
@@ -153,7 +158,8 @@ def analyze(path):
             if ch == quote_char:
                 state = 'whitespace_expected'
                 attr_value = quote_char + attr_value + quote_char
-                info.append({'name': attr_name, 'level': level, 'type': 'attr', 'value': attr_value})
+                info.append({'name': attr_name, 'level': level, 'type': 'attr', 'value': attr_value, 'new_line': new_line})
+                new_line = False
                 attr_name = ''
                 attr_value = ''
             if not quote_char:
@@ -166,6 +172,8 @@ def analyze(path):
                     else:
                         errors.append({index: 'Invalid tag'})
                 elif ch == ' ' or ch == "\t" or ch == "\n":
+                    if ch == "\n":
+                        new_line = True
                     state = 'after_name'
                 else:
                     attr_value += ch
@@ -183,6 +191,7 @@ def analyze(path):
             elif ch == ' ' or ch == "\t" or ch == "\n":
                 if ch == "\n":
                     info[-1]['value'] += "\n"
+                    new_line = True
                 state = 'after_name'
             elif xml_tag and ch == '?':
                 state = 'closing_expected'
@@ -207,7 +216,7 @@ def add_attrs_to_tag(info):
     index = 0
     for el in info[:]:
         if el['type'] == 'attr':
-            attrs.append({'name': el['name'], 'value': el['value']})
+            attrs.append({'name': el['name'], 'value': el['value'], 'new_line': el['new_line']})
             info.remove(el)
         else:
             if len(attrs) > 0:
