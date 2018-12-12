@@ -131,7 +131,7 @@ def get_indent_for_attr(params, indent_char, tag_name, level, use_cont_indent=Fa
     result = get_indent(params, indent_char, level)
     if use_cont_indent:
         if params['use_tab']:
-            tab_count = (params['continuation_indent'] / params['tab_size'])
+            tab_count = int(params['continuation_indent'] / params['tab_size'])
             space_count = params['continuation_indent'] - tab_count*params['tab_size']
             result += "\t" * tab_count + ' '*space_count
         else:

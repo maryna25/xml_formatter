@@ -12,10 +12,10 @@ answer = input()
 
 params = {}
 
-if answer == 3:
+if int(answer) == 3:
     params = params_reader.read_params_from_input()
 
-if answer == 4:
+if int(answer) == 4:
     print("Enter file name")
     name = input()
     params = params_reader.read_params_from_file(name)
@@ -23,6 +23,6 @@ if answer == 4:
 errors, info = xml_formater.analyze('import.xml')
 print(errors)
 
-if answer > 1:
+if int(answer) > 1:
     f = open("result.txt", "w")
     f.write(xml_formater.format(info, params))
