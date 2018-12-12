@@ -3,6 +3,8 @@ import params_reader
 
 
 print("Hello!")
+print("Enter file name")
+file_name = input()
 print("Enter 1 to only analyze xml")
 print("Enter 2 to format xml with default configs")
 print("Enter 3 to format xml with custom configs")
@@ -20,9 +22,9 @@ if int(answer) == 4:
     name = input()
     params = params_reader.read_params_from_file(name)
 
-errors, info = xml_formater.analyze('import.xml')
+errors, info = xml_formater.analyze(file_name)
 print(errors)
 
 if int(answer) > 1:
-    f = open("result.txt", "w")
+    f = open(file_name, "w")
     f.write(xml_formater.format(info, params))
