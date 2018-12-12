@@ -1,10 +1,13 @@
 import xml_formater
 import params_reader
-
+import os.path
 
 print("Hello!")
 print("Enter file name")
 file_name = input()
+while not os.path.exists(file_name):
+    print("Cannot find this file. Enter file name again")
+    file_name = input()
 print("Enter 1 to only analyze xml")
 print("Enter 2 to format xml with default configs")
 print("Enter 3 to format xml with custom configs")
