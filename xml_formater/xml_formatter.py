@@ -19,7 +19,11 @@ def format(info, params=None):
             text = format_text(params, tag['name'], indent_char, tag['level'], get_last_string_length(result))
             result += text
         elif tag['type'] == 'opening':
-            result += get_indent(params, indent_char, tag['level']) + '<' + tag['name'] + format_attrs(params, tag, indent_char) + format_space_in_tag(params) + '>'
+            result += get_indent(params, indent_char, tag['level']) + '<' + tag['name'] + format_attrs(params, tag, indent_char) + format_space_in_tag(params)
+            if tag['name'] == '?xml':
+                result += '?>'
+            else:
+                result += '>'
         elif tag['type'] == 'closing':
             if (not params['keep_white_spaces']) and only_spaces_in_last_line(result):  # if closing tag starts on new line we need to add indent
                 while result[-1] != "\n":  # but if there are spaces we need to remove it to add correct indent
