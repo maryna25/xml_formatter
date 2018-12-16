@@ -2,7 +2,7 @@ import xml_formater
 import params_reader
 import os.path
 
-print("Hello!")
+print("Hello! Check readme to find test instructions")
 print("Enter file name")
 file_name = input()
 while not os.path.exists(file_name):
