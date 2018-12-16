@@ -1,4 +1,6 @@
 def set_params(params=None):
+    """Function that sets default params if we dont have custom"""
+
     if not params:
         params = {'use_tab': False, 'smart_tabs': False, 'tab_size': 4, 'indent': 4, 'continuation_indent': 8,
                   'keep_indents_on_empty_line': False, 'keep_line_breaks': True, 'keep_line_breaks_in_text': True,
@@ -10,6 +12,8 @@ def set_params(params=None):
 
 
 def format(info, params=None):
+    """Main function fr xml formatting"""
+
     params = set_params(params)
     indent_char = "\t" if params['use_tab'] else ' '
     result = ''
@@ -42,11 +46,15 @@ def format(info, params=None):
 
 
 def only_spaces_in_last_line(text):
+    """Function that checks if last line empty or consists of spaces only"""
+
     last_line = text.split("\n")[-1]
     return last_line == '' or last_line.isspace()
 
 
 def remove_blank_lines(result, params):
+    """Function that removes needless blank lines"""
+
     i = len(result) - 1
     blank_lines_count = 0
     while i >= 0:
@@ -65,14 +73,18 @@ def remove_blank_lines(result, params):
 
 
 def get_indent(params, indent_char, level):
+    """Simple function that counts indents"""
     return indent_char * (level * params['indent']) if not params['keep_white_spaces'] else ''
 
 
 def format_space_in_tag(params, empty=False):
+    """Simple function that put space after tag name if necessary"""
     return ' ' if params['space_after_tag_name'] or (empty and params['space_in_empty_tag']) else ''
 
 
 def format_attrs(params, tag, indent_char):
+    """Function for formatting attributes"""
+
     attrs = tag.get('attrs', None)
     if not attrs:
         return ''
@@ -108,10 +120,12 @@ def format_attrs(params, tag, indent_char):
 
 
 def use_continuation_indent(attrs):
+    """Simple function to decide if it is continuation_indent situation"""
     return True if attrs[0]['new_line'] else False
 
 
 def attr_line_too_long(attrs_lines):
+    """Function that checks if line with attributes is too long"""
     for line in attrs_lines.split("\n"):
         if len(line) > 120:
             return True
@@ -119,6 +133,7 @@ def attr_line_too_long(attrs_lines):
 
 
 def chop_down_every_attr(attrs, params, indent_char, tag):
+    """Function that chops down all attributes"""
     result = ''
     for i, attr in enumerate(attrs):
         while attr['value'][-1] == "\n":
@@ -132,6 +147,8 @@ def chop_down_every_attr(attrs, params, indent_char, tag):
 
 
 def get_indent_for_attr(params, indent_char, tag_name, level, use_cont_indent=False):
+    """Function for getting indent for attributes"""
+
     result = get_indent(params, indent_char, level)
     if use_cont_indent:
         if params['use_tab']:
@@ -151,10 +168,13 @@ def get_indent_for_attr(params, indent_char, tag_name, level, use_cont_indent=Fa
 
 
 def format_equal(params):
+    """Function that puts spaces around equal if necessary"""
     return " = " if params['space_around_equal'] else "="
 
 
 def format_long_string(text, length, beg_length, attr=False, params=None, indent_char=None, tag_name=None, level=None, use_cont_indent=False):
+    """Function taht formats long strings(for text and attributes)"""
+
     wrapped_text = False
     do_not_check = []  # to store indexes of lines that cannot be split
     while not wrapped_text:
@@ -199,6 +219,8 @@ def format_long_string(text, length, beg_length, attr=False, params=None, indent
 
 
 def format_text(params, text, indent_char, level, length):
+    """Function that formats text"""
+
     if not params['keep_white_spaces']:
         if (not params['keep_line_breaks_in_text']) and (not text.isspace()):
             text = text.replace("\n", '')
@@ -224,4 +246,5 @@ def format_text(params, text, indent_char, level, length):
 
 
 def get_last_string_length(text):
+    """Simple function to get line lenght"""
     return len(text.split("\n")[-1])

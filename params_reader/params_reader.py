@@ -1,4 +1,6 @@
 def read_params_from_input():
+    """Function to read params for formatting from console"""
+
     params = {}
     print("Enter 1 if you want to use tab as indent char (default False)")
     params['use_tab'] = True if input() == '1' else False
@@ -45,6 +47,7 @@ def read_params_from_input():
 
 
 def read_params_from_file(name):
+    """Function to read params from file"""
     params = {}
     f = open(name, "r")
     lines = f.readlines()

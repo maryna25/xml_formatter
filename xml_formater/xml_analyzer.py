@@ -1,4 +1,6 @@
 def analyze(path):
+    """Function for analyzing xml"""
+
     file = open(path)
     line = file.read()
 
@@ -212,6 +214,8 @@ def analyze(path):
 
 
 def add_attrs_to_tag(info):
+    """Function for adding attributes (attr_name and value) to tag"""
+
     attrs = []
     index = 0
     for el in info[:]:
@@ -227,9 +231,10 @@ def add_attrs_to_tag(info):
 
 
 def unique(arr):
+    """Function for removing duplicated errors"""
+
     unique_arr = []
     for x in arr:
         if x not in unique_arr:
             unique_arr.append(x)
     return unique_arr
-
