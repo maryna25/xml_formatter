@@ -1,22 +1,21 @@
-Розробити консольну iнтерактивну утилiту форматування (позицiйне табулювання)
-XML-кодiв. Система повинна взаємодiяти з користувачем через
-консольний iнтерфейс та вмiти:
+# XML analyzer and formatter
 
-* Виконувати аналiз структури XML-документiв та виявляти невiдповiдностi
-та позицiювання структурних елементiв документiв та структурнi
-помилки в їх кодах. У випадку виявлення структурних помилок,
-система повинна виводити повiдомлення про знайденi помилки
-та виконувати форматування XML-документiв з їх врахуванням. Повiдомлення
-про знайденi помилки повиннi мiстити текст помилки та
-номер вiдповiдного рядка.
-* Виконувати форматування розмiщення структурних елементiв вхiдних
-XML-документiв використовуючи певний шаблон форматування
-XML-документiв. В якостi базового формату для форматування
-XML-документiв потрiбно використовувати PyCharm 2018.2 Code
-Style.XML
-* Створювати та редагувати власнi шаблони для форматування XML документiв.
+## Testing
 
-Реалiзувати окремi команди для виконання рiзних функцiй системи.
-Утилiта повинна запускатися з командного рядка термiналу операцiйної
-системи. Для демонстрацiї роботи системи потрiбно використовувати XMLдокументи
-з реальних веб-ресурсiв у мережi Internet.
+You can find test files in the test folder.
+
+### Testing formatter
+
+* test/formatter/import1.xml - to test how program sets indents, aligns attributes and formats short text
+* test/formatter/import2.xml - to test how program formats long text that can be split and text that cannot be split (doesn't have whitespaces)
+* test/formatter/import3.xml - to test how program formats long attributes
+* test/formatter/import4.xml - to test what program does with empty lines
+
+### Testing analyzer
+
+* test/analyzer/import1.xml - file with unclosed tags
+* test/analyzer/import2.xml - file with unmatched closing tag (<name1></name>)
+* test/analyzer/import3.xml - file with unclosing double quote in attribute
+* test/analyzer/import4.xml - file with invalid tag name (<1name></1name>)
+* test/analyzer/import5.xml - file with attribute without value
+* test/analyzer/import5.xml - file with attribute's name xml

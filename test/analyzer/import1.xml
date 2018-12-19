@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xml:lang="de-at">
+<establishments
+  country="AUT"
+      db_type="AUT_FMP"
+                test="test">
+  <establishment id="286" type="restaurant">
+  <name>Krone-Stubend</name>
+  <phone>05583 25 51</phone>
+  <www>
+    <email/>
+  <website>http://www.kronelech.at/</website>
+  </www>
+  <location test="test" test1="ksdcscsdcsdcscjdnckjdn" test2="djkscndfgvhbjnkrdftgybhunjrtfvgybhnwkjncjkwncwcnskjnckjsncksnckjnek">
+  <country_code_3>AUT</country_code_3>
+  <region_name>V</region_name>
+  <city_name>Lech am Arlberg</city_name>
+  <zip_code>6764</zip_code>
+  <address>Dorf 13</address>
+  </location>
+  <team>
+  <member type="chef">
+  <first_name>Thorsten</first_name>
+  <last_name>Kissau</last_name>
+  <gender>m</gender>
+  <awards/>
+  </member>
+  <member type="souschef">
+  <first_name>Daniel</first_name>
+  <last_name>Biedenkopf</last_name>
+  <gender>m</gender>
+  <awards/>
+  </member>
+  <member type="maitre">
+  <first_name>Willi</first_name>
+  <last_name>Hirsch</last_name>
+  <gender>m</gender>
+  <awards/>
+  </member>
+  <member type="patissier">
+  <first_name>Dora</first_name>
+  <last_name>Dukic</last_name>
+  <gender>m</gender>
+  <awards/>
+  </member>
+  </team>
+  <reviews>
+  <review>
+  <text vintage="2019" mark="14" favorite="false" locale="de-at">
+                            Das Hotel
+    Krone,
+    mitten
+    im Ortskern gelegen, gehört zweifellos
+
+
+
+    zu den Leuchttürmen der Lecher Hotellerie. Für Feinschmecker hält der Keller des Hauses eine der besten Weinsammlungen am Arlberg bereit. Die Küche, von morgens bis abends mit vielen Aufträgen eingedeckt, unterliegt auffallend häufig Qualitätsschwankungen, wenngleich ein gewisses Niveau nie unterschritten wird. Über das Gedeck und das Amuse wollen wir den Mantel des Schweigens breiten. Bei der Karte hat der Gast die Qual der umfangreichen Auswahl. Als Einstieg wurde ein Salat mit Huchen serviert. Schon zu einem Klassiker des Hauses avanciert ist die beliebte „Krone Casanova-Schnitte“, eine knusprige Kartoffelrösti mit Beef Tatar darüber und 50 Gramm LandArt Gold Selection Kaviar on top. Statt der legendären Hochzeitssuppe kosteten wir dieses Mal die angenehme Essenz vom Reh mit Morcheln und Pistazienkrusteln. Das Filet vom Ibérico-Schwein mit Oliven-Kartoffel-Stampf und die Kombination von Frischling und Hase konnten an diesem Abend leider nicht vollends überzeugen. Der Kaiserschmarren und die ausgezeichneten Weine – auch im offenen Ausschank – trösteten uns darüber hinweg.
+  </text>
+  </review>
+  </reviews>
+  <images>
+  <image>
+  <id_at>67C800F1-41B8-478F-AB95-D0C804443D43</id_at>
+  <path>KroneStuben_6764_LECH_V_print.jpg</path>
+  </image>
+  <image>
+  <id_at>55A6E048-0E63-4242-879E-E58D311A9940</id_at>
+  <path>KroneStuben_6764_LECH_V_web.jpg</path>
+  </image>
+  <image>
+  <id_at>C44ECE3E-2BB1-4DC5-A608-1CB196F70DA4</id_at>
+  <path>KroneStuben_6764_LECH_V_web1.jpg</path>
+  </image>
+  <image>
+  <id_at>F3AE90E7-32FD-4429-9BC0-2E6BD00D7EC0</id_at>
+  <path>KroneStuben_6764_LECH_V_web2.jpg</path>
+  </image>
+  <image>
+  <id_at>28FD5786-A665-41AE-A7CA-3FC6A7DC4777</id_at>
+  <path>KroneStuben_6764_LECH_V_web3.jpg</path>
+  </image>
+  </images>
+  <schedule_legacy>
+  <opening_dates>Mo-So 10-22 Uhr
+  24. Sept.-Anfang Dez. 2018, Ende April-Ende Juni 2019</opening_dates>
+  </schedule_legacy>
+  </establishment>
